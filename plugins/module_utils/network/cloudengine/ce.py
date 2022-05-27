@@ -59,23 +59,6 @@ except ImportError:
 _DEVICE_CLI_CONNECTION = None
 _DEVICE_NC_CONNECTION = None
 
-ce_provider_spec = {
-    'host': dict(),
-    'port': dict(type='int'),
-    'username': dict(fallback=(env_fallback, ['ANSIBLE_NET_USERNAME'])),
-    'password': dict(fallback=(env_fallback, ['ANSIBLE_NET_PASSWORD']), no_log=True),
-    'ssh_keyfile': dict(fallback=(env_fallback, ['ANSIBLE_NET_SSH_KEYFILE']), type='path'),
-    'use_ssl': dict(type='bool'),
-    'validate_certs': dict(type='bool'),
-    'timeout': dict(type='int'),
-    'transport': dict(default='cli', choices=['cli', 'netconf']),
-}
-ce_argument_spec = {
-    'provider': dict(type='dict', options=ce_provider_spec, removed_in_version='4.0.0',
-                     removed_from_collection='community.network'),
-}
-
-
 def to_string(data):
     return re.sub(r'<data\s+.+?(/>|>)', r'<data\1', data)
 
@@ -84,20 +67,10 @@ def check_args(module, warnings):
     pass
 
 
-def load_params(module):
-    """load_params"""
-    provider = module.params.get('provider') or dict()
-    for key, value in iteritems(provider):
-        if key in ce_argument_spec:
-            if module.params.get(key) is None and value is not None:
-                module.params[key] = value
-
-
 def get_connection(module):
     """get_connection"""
     global _DEVICE_CLI_CONNECTION
     if not _DEVICE_CLI_CONNECTION:
-        load_params(module)
         conn = Cli(module)
         _DEVICE_CLI_CONNECTION = conn
     return _DEVICE_CLI_CONNECTION
@@ -321,7 +294,6 @@ def merge_nc_xml(xml1, xml2):
 def get_nc_connection(module):
     global _DEVICE_NC_CONNECTION
     if not _DEVICE_NC_CONNECTION:
-        load_params(module)
         conn = NetconfConnection(module._socket_path)
         _DEVICE_NC_CONNECTION = conn
     return _DEVICE_NC_CONNECTION

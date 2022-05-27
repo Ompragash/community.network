@@ -38,41 +38,6 @@ from ansible.module_utils.connection import exec_command
 
 _DEVICE_CONFIGS = {}
 
-aruba_provider_spec = {
-    'host': dict(),
-    'port': dict(type='int'),
-    'username': dict(fallback=(env_fallback, ['ANSIBLE_NET_USERNAME'])),
-    'password': dict(fallback=(env_fallback, ['ANSIBLE_NET_PASSWORD']), no_log=True),
-    'ssh_keyfile': dict(fallback=(env_fallback, ['ANSIBLE_NET_SSH_KEYFILE']), type='path'),
-    'timeout': dict(type='int'),
-}
-aruba_argument_spec = {
-    'provider': dict(type='dict', options=aruba_provider_spec, removed_in_version='4.0.0',
-                     removed_from_collection='community.network')
-}
-
-aruba_top_spec = {
-    'host': dict(removed_in_version='0.2.0',
-                 removed_from_collection='community.network'),  # was Ansible 2.9
-    'port': dict(removed_in_version='0.2.0',
-                 removed_from_collection='community.network', type='int'),  # was Ansible 2.9
-    'username': dict(removed_in_version='0.2.0',
-                     removed_from_collection='community.network'),  # was Ansible 2.9
-    'password': dict(removed_in_version='0.2.0',
-                     removed_from_collection='community.network', no_log=True),  # was Ansible 2.9
-    'ssh_keyfile': dict(removed_in_version='0.2.0',
-                        removed_from_collection='community.network', type='path'),  # was Ansible 2.9
-    'timeout': dict(removed_in_version='0.2.0',
-                    removed_from_collection='community.network', type='int'),  # was Ansible 2.9
-}
-
-aruba_argument_spec.update(aruba_top_spec)
-
-
-def get_provider_argspec():
-    return aruba_provider_spec
-
-
 def check_args(module, warnings):
     pass
 

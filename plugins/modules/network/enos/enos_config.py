@@ -30,8 +30,6 @@ description:
     for segmenting configuration into sections.  This module provides
     an implementation for working with ENOS configuration sections in
     a deterministic way.
-extends_documentation_fragment:
-- community.network.enos
 
 notes:
   - Tested against ENOS 8.4.1
@@ -185,7 +183,6 @@ backup_path:
 """
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.community.network.plugins.module_utils.network.enos.enos import load_config, get_config
-from ansible_collections.community.network.plugins.module_utils.network.enos.enos import enos_argument_spec
 from ansible_collections.community.network.plugins.module_utils.network.enos.enos import check_args
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.config import NetworkConfig, dumps
 
@@ -272,8 +269,6 @@ def main():
         comment=dict(default=DEFAULT_COMMIT_COMMENT),
         admin=dict(type='bool', default=False)
     )
-
-    argument_spec.update(enos_argument_spec)
 
     mutually_exclusive = [('lines', 'src'),
                           ('parents', 'src')]

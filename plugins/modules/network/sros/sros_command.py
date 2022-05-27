@@ -19,8 +19,6 @@ description:
     or timing out if the condition is not met.
   - This module does not support running commands in configuration mode.
     Please use M(community.network.sros_config) to configure SR OS devices.
-extends_documentation_fragment:
-- community.network.sros
 
 options:
   commands:
@@ -81,20 +79,17 @@ tasks:
   - name: Run show version on remote devices
     community.network.sros_command:
       commands: show version
-      provider: "{{ cli }}"
 
   - name: Run show version and check to see if output contains sros
     community.network.sros_command:
       commands: show version
       wait_for: result[0] contains sros
-      provider: "{{ cli }}"
 
   - name: Run multiple commands on remote nodes
     community.network.sros_command:
       commands:
         - show version
         - show port detail
-      provider: "{{ cli }}"
 
   - name: Run multiple commands and evaluate the output
     community.network.sros_command:
@@ -103,7 +98,6 @@ tasks:
         - show port detail
       wait_for:
         - result[0] contains TiMOS-B-14.0.R4
-      provider: "{{ cli }}"
 """
 
 RETURN = """
@@ -131,7 +125,7 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.parsing import Conditional
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import ComplexList
 from ansible.module_utils.six import string_types
-from ansible_collections.community.network.plugins.module_utils.network.sros.sros import run_commands, sros_argument_spec, check_args
+from ansible_collections.community.network.plugins.module_utils.network.sros.sros import run_commands, check_args
 
 
 def to_lines(stdout):
@@ -174,8 +168,6 @@ def main():
         retries=dict(default=10, type='int'),
         interval=dict(default=1, type='int')
     )
-
-    argument_spec.update(sros_argument_spec)
 
     module = AnsibleModule(argument_spec=argument_spec,
                            supports_check_mode=True)

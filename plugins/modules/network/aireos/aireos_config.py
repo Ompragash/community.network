@@ -16,8 +16,6 @@ description:
   - AireOS does not use a block indent file syntax, so there are no sections or parents.
     This module provides an implementation for working with AireOS configurations in
     a deterministic way.
-extends_documentation_fragment:
-- community.network.aireos
 
 options:
   lines:
@@ -195,7 +193,6 @@ backup_path:
   sample: /playbooks/ansible/backup/aireos_config.2016-07-16@22:28:34
 """
 from ansible_collections.community.network.plugins.module_utils.network.aireos.aireos import run_commands, get_config, load_config
-from ansible_collections.community.network.plugins.module_utils.network.aireos.aireos import aireos_argument_spec
 from ansible_collections.community.network.plugins.module_utils.network.aireos.aireos import check_args as aireos_check_args
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.config import NetworkConfig, dumps
@@ -263,7 +260,6 @@ def main():
         diff_ignore_lines=dict(type='list')
     )
 
-    argument_spec.update(aireos_argument_spec)
 
     mutually_exclusive = [('lines', 'src'),
                           ('save', 'save_when')]

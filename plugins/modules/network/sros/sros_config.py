@@ -17,8 +17,6 @@ description:
     for segmenting configuration into sections.  This module provides
     an implementation for working with SR OS configuration sections in
     a deterministic way.
-extends_documentation_fragment:
-- community.network.sros
 
 options:
   lines:
@@ -155,13 +153,11 @@ vars:
 - name: Enable rollback location
   community.network.sros_config:
     lines: configure system rollback rollback-location "cf3:/ansible"
-    provider: "{{ cli }}"
 
 - name: Set system name to {{ inventory_hostname }} using one line
   community.network.sros_config:
     lines:
         - configure system name "{{ inventory_hostname }}"
-    provider: "{{ cli }}"
 
 - name: Set system name to {{ inventory_hostname }} using parents
   community.network.sros_config:
@@ -170,13 +166,11 @@ vars:
     parents:
         - configure
         - system
-    provider: "{{ cli }}"
     backup: yes
 
 - name: Load config from file
   community.network.sros_config:
       src: "{{ inventory_hostname }}.cfg"
-      provider: "{{ cli }}"
       save: yes
 
 - name: Invalid use of lines
@@ -185,7 +179,6 @@ vars:
       - service
       -     vpls 1000 customer foo 1 create
       -         description "invalid lines example"
-    provider: "{{ cli }}"
 
 - name: Valid use of lines
   community.network.sros_config:
@@ -194,7 +187,6 @@ vars:
     parents:
       - service
       - vpls 1000 customer foo 1 create
-    provider: "{{ cli }}"
 
 - name: Configurable backup path
   community.network.sros_config:
@@ -223,7 +215,7 @@ backup_path:
 """
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.config import NetworkConfig, dumps
-from ansible_collections.community.network.plugins.module_utils.network.sros.sros import sros_argument_spec, check_args
+from ansible_collections.community.network.plugins.module_utils.network.sros.sros import check_args
 from ansible_collections.community.network.plugins.module_utils.network.sros.sros import load_config, run_commands, get_config
 
 
@@ -295,8 +287,6 @@ def main():
         backup_options=dict(type='dict', options=backup_spec),
         save=dict(type='bool', default=False),
     )
-
-    argument_spec.update(sros_argument_spec)
 
     mutually_exclusive = [('lines', 'src'),
                           ('parents', 'src')]

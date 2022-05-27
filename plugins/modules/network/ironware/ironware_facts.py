@@ -18,8 +18,6 @@ description:
     base network fact keys with C(ansible_net_<fact>).  The facts
     module will always collect a base set of facts from the device
     and can enable or disable collection of additional facts.
-extends_documentation_fragment:
-- community.network.ironware
 
 notes:
   - Tested against Ironware 5.8e
@@ -131,7 +129,7 @@ ansible_net_neighbors:
 import re
 
 from ansible_collections.community.network.plugins.module_utils.network.ironware.ironware import run_commands
-from ansible_collections.community.network.plugins.module_utils.network.ironware.ironware import ironware_argument_spec, check_args
+from ansible_collections.community.network.plugins.module_utils.network.ironware.ironware import check_args
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.six import iteritems
 
@@ -583,8 +581,6 @@ def main():
     argument_spec = dict(
         gather_subset=dict(default=["!config", "!mpls"], type='list')
     )
-
-    argument_spec.update(ironware_argument_spec)
 
     module = AnsibleModule(argument_spec=argument_spec,
                            supports_check_mode=True)

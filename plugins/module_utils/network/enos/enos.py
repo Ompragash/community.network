@@ -43,33 +43,11 @@ from ansible.module_utils.connection import ConnectionError
 _DEVICE_CONFIGS = {}
 _CONNECTION = None
 
-enos_provider_spec = {
-    'host': dict(),
-    'port': dict(type='int'),
-    'username': dict(fallback=(env_fallback, ['ANSIBLE_NET_USERNAME'])),
-    'password': dict(fallback=(env_fallback, ['ANSIBLE_NET_PASSWORD']), no_log=True),
-    'ssh_keyfile': dict(fallback=(env_fallback, ['ANSIBLE_NET_SSH_KEYFILE']), type='path'),
-    'authorize': dict(fallback=(env_fallback, ['ANSIBLE_NET_AUTHORIZE']), type='bool'),
-    'auth_pass': dict(fallback=(env_fallback, ['ANSIBLE_NET_AUTH_PASS']), no_log=True),
-    'timeout': dict(type='int'),
-    'context': dict(),
-    'passwords': dict(no_log=True)
-}
-
-enos_argument_spec = {
-    'provider': dict(type='dict', options=enos_provider_spec, removed_in_version='4.0.0',
-                     removed_from_collection='community.network'),
-}
-
 command_spec = {
     'command': dict(key=True),
     'prompt': dict(),
     'answer': dict()
 }
-
-
-def get_provider_argspec():
-    return enos_provider_spec
 
 
 def check_args(module, warnings):

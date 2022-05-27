@@ -30,8 +30,6 @@ description:
     read from the device. The C(enos_command) module includes an
     argument that will cause the module to wait for a specific condition
     before returning or timing out if the condition is not met.
-extends_documentation_fragment:
-- community.network.enos
 
 options:
   commands:
@@ -152,7 +150,6 @@ import time
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.community.network.plugins.module_utils.network.enos.enos import run_commands, check_args
-from ansible_collections.community.network.plugins.module_utils.network.enos.enos import enos_argument_spec
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.parsing import Conditional
 from ansible.module_utils.six import string_types
 
@@ -175,8 +172,6 @@ def main():
         retries=dict(default=10, type='int'),
         interval=dict(default=1, type='int')
     )
-
-    spec.update(enos_argument_spec)
 
     module = AnsibleModule(argument_spec=spec, supports_check_mode=True)
     result = {'changed': False}
